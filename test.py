@@ -4,7 +4,7 @@ from Optimizers.GA import GA
 from Optimizers.Map import Map
 from main import params, exports
 
-graph = Map("Instances/6.5.3.txt")
+graph = Map("Instances/10.10.3.txt")
 ga = GA(graph, params)
 s = time.time()
 ga.run(exports)

@@ -350,9 +350,9 @@ if __name__ == "__main__":
     # print(ds)
     # save_stats('instance', 'version', 'runtime', 'tech_num', 'work_time', 'upper', [0,1])
     # adjust_results('../result6-20.xlsx', '../mixed-result.xlsx')
-    convert_result_to_col('../result3/general/22_01_15/20220115074018mixed-result.xlsx', '../compare-result.xlsx', 5)
+    # convert_result_to_col('../result3/general/22_01_15/20220115074018mixed-result.xlsx', '../compare-result.xlsx', 5)
     # combine_results('../result3/new', '../result3/general')
-    # combine_stats('../result3/old', '../result3/general')
+    combine_stats('../result3/new', '../result3/general')
     # convert_stats_to_result('../result3/general/20211211015719mixed-stats.xlsx', '../result3/general')
     # get_converge_iteration('../result3/general/21_12_13', '../result3/general/21_12_13')
     pass

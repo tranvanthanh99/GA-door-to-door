@@ -13,6 +13,7 @@ class Chromesome():
         self.decode = None
         self.decode_str = ''
         self.fitness = 0
+        self.cost = 0
         self.detail = None
         self.decoder()
         # print(self.decode_str)
@@ -112,14 +113,30 @@ class Chromesome():
                     idv[des] = 0
 
     def get_fitness(self, idv, sorted_routes, specific_routes):
+
+        # idv = np.array([1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1], dtype=np.int8)
+        # sorted_routes = {
+        #     3: 15.060592656263976, 
+        #     5: 17.783625084492144, 
+        #     1: 36.19501887295562, 
+        #     4: 45.91108415788641, 
+        #     2: 59.0776372536541, 
+        #     6: 73.58838576224957
+        # }
+        # specific_routes = {1: [3, 1, 2], 0: [5, 4, 6]}
+        # print(list(idv))
+        # print(sorted_routes)
+        # print(specific_routes)
+
+
         routes = list(sorted_routes.keys())
-    
 
         search_space = copy.deepcopy(sorted_routes)
         # search_space = sorted_routes[:]
 
         # fix gene that violates the constraint
-        self.adjust_idv(idv, routes, specific_routes)
+        # self.adjust_idv(idv, routes, specific_routes)
+        # print(list(idv))
 
         C = []
 
@@ -172,6 +189,11 @@ class Chromesome():
                     if endurance + e_travel_time + self.graph.dtime[e_des][0] > params['drone_time']: 
                         #if uav cannot flyback to base when chosing the e_des as next node 
                         route_details['time_at_node'][next_node] = (search_space[next_node], -1)
+                        # print(next_node)
+                        # print(endurance + e_travel_time + self.graph.dtime[e_des][0])
+                        # print(src, e_des, i)
+                        if e_des != C[-1]:
+                            idv[i+1] = 1
                         continue
                     else:
                         route_details['time_at_node'][next_node] = (search_space[next_node], u_time + e_travel_time)
@@ -251,11 +273,13 @@ class Chromesome():
 
         cost, wait_times = self.find_cost(time_at_nodes=route_details['time_at_node'], uav_tour=uav_tour, specific_routes=specific_routes)
         route_details['wait_times'] = wait_times
+        self.cost = cost
         if work_time > params['work_time']:
             penalty_rate = (work_time - params['work_time']) / params['work_time']
             penalty_rate = 0.8 * penalty_rate + 0.2
             cost += cost * penalty_rate
-
+        # print(uav_tour)
+        # sys.exit()
         self.fitness = cost
         self.detail = (route_details, uav_tour, work_time)
         # return cost, route_details, uav_tour, work_time
